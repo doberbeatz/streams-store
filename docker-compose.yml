@@ -1,0 +1,50 @@
+version: '3'
+services:
+
+  nginx:
+    image: nginx
+    container_name: streams_nginx
+    volumes:
+      - ./:/project
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - 8080:80
+    links:
+      - web
+    restart: always
+
+  web:
+    build: .
+    container_name: streams_web
+    volumes:
+      - ./:/project
+    ports:
+      - 9000
+    env_file:
+      - .env
+    links:
+      - db
+    restart: always
+
+  cron:
+    build: .
+    container_name: streams_cron
+    volumes:
+      - ./:/project
+    ports:
+      - 9000
+    command: cron && tail -f /var/log/cron.log
+    env_file:
+      - .env
+    links:
+      - db
+    restart: always
+
+  db:
+    image: mysql
+    container_name: streams_db
+    ports:
+      - 3306
+    env_file:
+      - .env.mysql
+    restart: always
