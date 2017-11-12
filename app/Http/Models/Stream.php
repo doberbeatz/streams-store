@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -12,6 +13,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $viewer_count
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
+ *
+ * @method static Builder|self byGameIds(array $gameIds)
+ * @method static Builder|self betweenDatetime(\DateTime $from, \DateTime $to)
  */
 class Stream extends Model
 {
@@ -27,5 +31,30 @@ class Stream extends Model
     protected function game()
     {
         return $this->hasOne(Game::class, 'id', 'game_id');
+    }
+
+    /**
+     * @param Builder $query
+     * @param array $gameIds
+     * @return Builder|self
+     */
+    public function scopeByGameIds($query, array $gameIds)
+    {
+        if (empty($gameIds)) {
+            return $query;
+        }
+
+        return $query->whereIn('game_id', $gameIds);
+    }
+
+    /**
+     * @param Builder $query
+     * @param \DateTime $from
+     * @param \DateTime $to
+     * @return Builder|self
+     */
+    public function scopeBetweenDatetime($query, \DateTime $from, \DateTime $to)
+    {
+        return $query->whereBetween('created_at', [$from, $to]);
     }
 }

@@ -20,32 +20,26 @@ class StreamRepository
      * @param StreamFilter|null $filter
      * @return Collection
      */
-    public function getStreamList(StreamFilter $filter = null)
+    public function getStreamList(StreamFilter $filter)
     {
-        $query = $this->model->query()
-            ->select(\DB::raw('DISTINCT stream_id, game_id'));
-
-        $filter->getGameIds() && $query->whereIn('game_id', $filter->getGameIds());
-
-        return $query->get()
-            ->mapToGroups(function ($item, $key) {
-                /** @var Stream $item */
-                return [$item->game->name => $item->stream_id];
-            });
+        return $this->model
+            ->byGameIds($filter->getGameIds())
+            ->betweenDatetime($filter->getPeriod(), $filter->getPeriodEnd())
+            ->select(\DB::raw('DISTINCT stream_id, game_id'))
+            ->get();
     }
 
     /**
      * @param StreamFilter|null $filter
      * @return Collection
      */
-    public function getViewersCount(StreamFilter $filter = null)
+    public function getViewersCount(StreamFilter $filter)
     {
-        $query = $this->model->query()
-            ->select(\DB::raw('MAX(viewer_count) as viewer_count, game_id'));
-
-        return $query->groupBy('game_id')->get()
-            ->map(function ($stream) {
-                return [$stream->game->name => $stream->viewer_count];
-            });
+        return $this->model
+            ->byGameIds($filter->getGameIds())
+            ->betweenDatetime($filter->getPeriod(), $filter->getPeriodEnd())
+            ->select(\DB::raw('MAX(viewer_count) as viewer_count, game_id'))
+            ->groupBy('game_id')
+            ->get();
     }
 }

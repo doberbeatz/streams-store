@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Services\TwitchClient;
 use App\Models\Stream;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 
 class StreamsPull extends Command
@@ -49,6 +50,7 @@ class StreamsPull extends Command
                 'game_id'      => $stream['game_id'],
                 'service'      => Stream::TWITCH_SERVICE,
                 'viewer_count' => $stream['viewer_count'],
+                'created_at'   => (new Carbon())->minute(0)->second(0),
             ];
         }
 

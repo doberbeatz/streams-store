@@ -3,5 +3,5 @@
 Route::prefix('streams')->group(function () {
 
     Route::get('list', 'StreamsController@getStreamList');
-    Route::get('views-count', 'StreamsController@getViewsCount');
+    Route::get('viewers-count', 'StreamsController@getViewersCount');
 });

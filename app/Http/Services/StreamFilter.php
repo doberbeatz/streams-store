@@ -7,9 +7,9 @@ class StreamFilter
     /** @var  array $gameIds */
     protected $gameIds = [];
     /** @var  \DateTime */
-    protected $periodFrom;
+    protected $period;
     /** @var  \DateTime */
-    protected $periodTo;
+    protected $periodEnd;
 
     /**
      * @return array
@@ -32,36 +32,36 @@ class StreamFilter
     /**
      * @return \DateTime
      */
-    public function getPeriodFrom(): \DateTime
+    public function getPeriod(): \DateTime
     {
-        return $this->periodFrom;
+        return $this->period;
     }
 
     /**
-     * @param \DateTime $periodFrom
+     * @param \DateTime $period
      * @return $this
      */
-    public function setPeriodFrom(\DateTime $periodFrom)
+    public function setPeriod(\DateTime $period)
     {
-        $this->periodFrom = $periodFrom;
+        $this->period = $period;
         return $this;
     }
 
     /**
      * @return \DateTime
      */
-    public function getPeriodTo(): \DateTime
+    public function getPeriodEnd(): \DateTime
     {
-        return $this->periodTo;
+        return $this->periodEnd;
     }
 
     /**
-     * @param \DateTime $periodTo
+     * @param \DateTime $periodEnd
      * @return $this
      */
-    public function setPeriodTo(\DateTime $periodTo)
+    public function setPeriodEnd(\DateTime $periodEnd)
     {
-        $this->periodTo = $periodTo;
+        $this->periodEnd = $periodEnd;
         return $this;
     }
 }

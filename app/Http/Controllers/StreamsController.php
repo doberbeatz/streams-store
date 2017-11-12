@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Repositories\StreamRepository;
 use App\Http\Requests\StreamRequest;
+use App\Http\Resources\StreamListCollection;
+use App\Http\Resources\StreamViewerCounterCollection;
 use App\Http\Services\StreamFilter;
+use Carbon\Carbon;
 
 class StreamsController extends Controller
 {
@@ -17,30 +20,51 @@ class StreamsController extends Controller
 
     /**
      * @param StreamRequest $request
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return StreamListCollection
      */
     public function getStreamList(StreamRequest $request)
     {
         $request->validate();
-
         $filter = (new StreamFilter())
-            ->setGameIds((array) $request->input('game_id', []))
-            ->setPeriodFrom(new \DateTime($request->input('period_from', 'now')))
-            ->setPeriodTo(new \DateTime($request->input('period_to', 'now')));
+            ->setGameIds((array)$request->input('game_id', []))
+            ->setPeriod(
+                (new Carbon($request->input('period', 'now')))
+                    ->second(0)
+            )
+            ->setPeriodEnd(
+                (new Carbon($request->input(
+                    'period_end',
+                    $request->input('period', 'now')
+                )))->second(0)
+            );
 
-        return $this->streams->getStreamList($filter);
+        return new StreamListCollection(
+            $this->streams->getStreamList($filter)
+        );
     }
 
     /**
      * @param StreamRequest $request
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return StreamViewerCounterCollection
      */
     public function getViewersCount(StreamRequest $request)
     {
         $request->validate();
+        $filter = (new StreamFilter())
+            ->setGameIds((array)$request->input('game_id', []))
+            ->setPeriod(
+                (new Carbon($request->input('period', 'now')))
+                    ->second(0)
+            )
+            ->setPeriodEnd(
+                (new Carbon($request->input(
+                    'period_end',
+                    $request->input('period', 'now')
+                )))->second(59)
+            );
 
-        $filter = new StreamFilter();
-
-        return $this->streams->getViewersCount($filter);
+        return new StreamViewerCounterCollection(
+            $this->streams->getViewersCount($filter)
+        );
     }
 }
