@@ -11,8 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property Game $game
  * @property string $service
  * @property int $viewer_count
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
+ * @property \Carbon\Carbon $datetime
  *
  * @method static Builder|self byGameIds(array $gameIds)
  * @method static Builder|self betweenDatetime(\DateTime $from, \DateTime $to)
@@ -24,6 +23,14 @@ class Stream extends Model
 
     /** @var string $table */
     protected $table = self::TABLE_NAME;
+
+    /** @var array $dates */
+    protected $dates = [
+        'datetime',
+    ];
+
+    /** @var bool $timestamps */
+    public $timestamps = false;
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
@@ -55,6 +62,6 @@ class Stream extends Model
      */
     public function scopeBetweenDatetime($query, \DateTime $from, \DateTime $to)
     {
-        return $query->whereBetween('created_at', [$from, $to]);
+        return $query->whereBetween('datetime', [$from, $to]);
     }
 }

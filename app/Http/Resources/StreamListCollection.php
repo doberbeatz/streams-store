@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use App\Models\Stream;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class StreamListCollection extends ResourceCollection
@@ -17,9 +18,16 @@ class StreamListCollection extends ResourceCollection
     {
         return [
             'data' => $this->collection
-                ->mapToGroups(function ($stream) {
-                    /** @var Stream $stream */
-                    return [$stream->game->name => $stream->stream_id];
+                ->groupBy('game_id')
+                ->map(function ($gameCollection) {
+                    /** @var Collection $gameCollection */
+                    return [
+                        'game_name'         => $gameCollection->first()->game->name,
+                        'stream_list' => $gameCollection->map(function ($stream) {
+                            /** @var Stream $stream */
+                            return $stream->stream_id;
+                        }),
+                    ];
                 }),
         ];
     }

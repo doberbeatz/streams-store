@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Game;
 use App\Models\Stream;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
@@ -20,7 +21,15 @@ class CreateStreamsTable extends Migration
             $table->integer('game_id')->unsigned();
             $table->string('service');
             $table->integer('viewer_count', false, true);
-            $table->timestamp('created_at', 0)->useCurrent();
+            $table->timestamp('datetime', 0)->useCurrent();
+        });
+
+        Schema::enableForeignKeyConstraints();
+        Schema::table(Stream::TABLE_NAME, function (Blueprint $table) {
+            $table->foreign('game_id')
+                ->references('id')->on(Game::TABLE_NAME)
+                ->onDelete('cascade');
+            $table->index(['datetime']);
         });
     }
 

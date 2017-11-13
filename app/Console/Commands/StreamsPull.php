@@ -31,8 +31,8 @@ class StreamsPull extends Command
     {
         $streams = $this->client->getStreams();
         if ($this->insertStreams($streams)) {
-            echo count($streams) . ' streams have been added.';
-            echo 'Database has been successfully updated.';
+            echo count($streams) . ' streams have been added.' . PHP_EOL;
+            echo 'Database has been successfully updated.' . PHP_EOL;
         }
     }
 
@@ -50,7 +50,7 @@ class StreamsPull extends Command
                 'game_id'      => $stream['game_id'],
                 'service'      => Stream::TWITCH_SERVICE,
                 'viewer_count' => $stream['viewer_count'],
-                'created_at'   => (new Carbon())->minute(0)->second(0),
+                'datetime'     => (new Carbon())->second(0),
             ];
         }
 

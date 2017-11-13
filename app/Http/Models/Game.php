@@ -15,7 +15,11 @@ class Game extends Model
 {
     const TABLE_NAME = 'games';
 
+    /** @var string $table */
     protected $table = self::TABLE_NAME;
+
+    /** @var bool $timestamps */
+    public $timestamps = false;
 
     /**
      * @param Builder $query
