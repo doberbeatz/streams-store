@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Models\Game;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Artisan;
 use Laravel\Passport\Passport;
 use Tests\TestCase;
@@ -23,10 +22,7 @@ class StreamTest extends TestCase
         parent::setUp();
 
         Artisan::call('migrate');
-
-        /** @var User $user */
-        $user = factory(User::class)->create();
-        Passport::actingAs($user);
+        Passport::actingAs(factory(User::class)->create());
     }
 
     /**
