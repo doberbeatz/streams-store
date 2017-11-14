@@ -72,3 +72,111 @@ Use **access_token** for using the API in header of request.
 Accept: application/json
 Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjRkNzIxNTJjMmRhY2I5MGYzOWQzYTRhYmE5ZmZjNDFiMGM3YjE3M2EyOGEyYzc2OTk3ZTM3Y2MwZGVlOGZhYmVlZmM1NzY4OTNmMDgxOTlkIn0.eyJhdWQiOiIyIiwianRpIjoiNGQ3MjE1MmMyZGFjYjkwZjM5ZDNhNGFiYTlmZmM0MWIwYzdiMTczYTI4YTJjNzY5OTdlMzdjYzBkZWU4ZmFiZWVmYzU3Njg5M2YwODE5OWQiLCJpYXQiOjE1MTA2MDgwMjcsIm5iZiI6MTUxMDYwODAyNywiZXhwIjoxNTQyMTQ0MDI3LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.QyF3ziCipiaQo2O-caPdf8HGp7Qm_jj9ehXY5UQbVmuTkHqvF1HFv74l3KGxhlBz28pebqYx1ZDLqwvUDpX8dPqneqTQw8_-drAvm8KkurJu2MGq6QdWrfJKM4Lp3We50-m2EL84bk724mY8-yfzE6DEI1aeWPJ44k1sIuMK5eQWPHL6uD6wcLHgc7kcQOhBtMrSRAuu0PbBZzOtkoqvFfHmcH1qj_hK-DquYg-R68-z2x6skSI-qrE1Ahn0LE_J0KDd97NR4weT7cWXb1iGfI92hn9IoFFM6ixKzbk7Phd0Vmy2mSFJCtQAaYXJXAdKuCzXdu9wH-xz2C8ZV0CWb3Zilpe5PMRo22xfFadF--83-NqttU95vRN0M0dHwT7BVeudBFUwojOvEscfNB1DTmHBbK23xjmFBhkn5gCiIBgUCSVWqA1fFp1N0px9o3uMt2Qw_Em6BE8pSIqrncPDu5ig0TY114Mb4acRVsU4shkF_YSZs8mFAgAT4Irl-e9dMVNpkd-eCywqkTSe14VziKTvrNxrMJL9Fx4rEVykoneMpzVVOI7pEajgehL0nwI8f4jxMfPbqRgGivK6N91old_IE0HK-mLSg4tiryks8mjP-rhf-KZ4ZN5JKpZyU7gzbA6SG9QNRLuUJAftzaJkgXqDt-AzvlHWB34DG3b8oNQ
 ```
+
+## Endponts
+
+### Streams List
+**Request**
+```
+POST /api/streams/list
+```
+| Field | Value | Type | Required | Description |
+| ----- | ----- | ---- | -------- | ----------- |
+| game_id | 1 | Integer | - | - |
+| period | 2017-11-12 21:00 | Date | - | If not specified then current date time will be used.
+| period_end | 2017-11-13 | Date | - | If only *period* will be specified but *period_end* not, then exact *period* time will be used.
+
+**Response**
+```json
+{
+    "data": {
+        "29595": {
+            "game_name": "Dota 2",
+            "stream_list": [
+                "26729623136",
+                "26729465392",
+                "26729701648",
+                "26729654416",
+            ]
+        }
+    }
+}
+```
+
+### Viewer Count List
+**Request**
+```
+POST /api/streams/viewer-count
+```
+| Field | Value | Type | Required | Description |
+| ----- | ----- | ---- | -------- | ----------- |
+| game_id | 1 | Integer | - | - |
+| period | 2017-11-12 21:00 | Date | - | If not specified then current date time will be used.
+| period_end | 2017-11-13 | Date | - | If only *period* will be specified but *period_end* not, then exact *period* time will be used.
+
+**Response**
+```json
+{
+    "data": {
+        "29595": {
+            "game_name": "Dota 2",
+            "viewer_count_list": [
+                {
+                    "time": "2017-11-14T19:32:00+00:00",
+                    "viewer_count": 226830
+                },
+                {
+                    "time": "2017-11-14T21:59:00+00:00",
+                    "viewer_count": 81038
+                }
+            ]
+        },
+        "32399": {
+            "game_name": "Counter-Strike: Global Offensive",
+            "viewer_count_list": [
+                {
+                    "time": "2017-11-14T19:32:00+00:00",
+                    "viewer_count": 128233
+                },
+                {
+                    "time": "2017-11-14T21:59:00+00:00",
+                    "viewer_count": 107672
+                }
+            ]
+        },
+    }
+}
+```
+
+### Games List
+**Request**
+```
+POST /api/streams/viewer-count
+```
+**Response**
+```json
+[
+    {
+        "id": 29595,
+        "name": "Dota 2",
+        "is_active": 1
+    },
+    {
+        "id": 32399,
+        "name": "Counter-Strike: Global Offensive",
+        "is_active": 1
+    },
+    {
+        "id": 493057,
+        "name": "PLAYERUNKNOWN'S BATTLEGROUNDS",
+        "is_active": 1
+    },
+    {
+        "id": 496712,
+        "name": "Call of Duty: WWII",
+        "is_active": 1
+    }
+]
+```
+
+*is_active* field is needed for whether to pull the data from twitch about the game or not.
