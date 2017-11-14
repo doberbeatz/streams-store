@@ -12,17 +12,17 @@ TWITCH_CLIENT_ID=2b1k7jdxmt4z46ay4s3lmdi0h74p37
 TWITCH_CLIENT_SECRET=52zibkla38p4gsn348qtyprax43p0t
 ```
 
-Then build up the containers using docker-compose:
+Then start the containers using docker-compose:
 ```
 docker-compose up -d
 ```
 
-After the all containers will be started run next command:
+After the all containers will be started out run next command:
 ```
 docker exec -ti streams_web bash -c 'php artisan migrate --seed'
 ```
 
-Then you need to create Client Id and Secret using Passport Package:
+Then you need to generate Client Id and Secret using Passport Package:
 ```
 docker exec -ti streams_web bash -c 'php artisan passport:install'
 ```
@@ -67,7 +67,7 @@ You'll get a response like this:
 }
 ```
 
-Use **access_token** for using the API in header of request.
+Use the *access_token* in order to use the API in a header of the request.
 ```
 Accept: application/json
 Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjRkNzIxNTJjMmRhY2I5MGYzOWQzYTRhYmE5ZmZjNDFiMGM3YjE3M2EyOGEyYzc2OTk3ZTM3Y2MwZGVlOGZhYmVlZmM1NzY4OTNmMDgxOTlkIn0.eyJhdWQiOiIyIiwianRpIjoiNGQ3MjE1MmMyZGFjYjkwZjM5ZDNhNGFiYTlmZmM0MWIwYzdiMTczYTI4YTJjNzY5OTdlMzdjYzBkZWU4ZmFiZWVmYzU3Njg5M2YwODE5OWQiLCJpYXQiOjE1MTA2MDgwMjcsIm5iZiI6MTUxMDYwODAyNywiZXhwIjoxNTQyMTQ0MDI3LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.QyF3ziCipiaQo2O-caPdf8HGp7Qm_jj9ehXY5UQbVmuTkHqvF1HFv74l3KGxhlBz28pebqYx1ZDLqwvUDpX8dPqneqTQw8_-drAvm8KkurJu2MGq6QdWrfJKM4Lp3We50-m2EL84bk724mY8-yfzE6DEI1aeWPJ44k1sIuMK5eQWPHL6uD6wcLHgc7kcQOhBtMrSRAuu0PbBZzOtkoqvFfHmcH1qj_hK-DquYg-R68-z2x6skSI-qrE1Ahn0LE_J0KDd97NR4weT7cWXb1iGfI92hn9IoFFM6ixKzbk7Phd0Vmy2mSFJCtQAaYXJXAdKuCzXdu9wH-xz2C8ZV0CWb3Zilpe5PMRo22xfFadF--83-NqttU95vRN0M0dHwT7BVeudBFUwojOvEscfNB1DTmHBbK23xjmFBhkn5gCiIBgUCSVWqA1fFp1N0px9o3uMt2Qw_Em6BE8pSIqrncPDu5ig0TY114Mb4acRVsU4shkF_YSZs8mFAgAT4Irl-e9dMVNpkd-eCywqkTSe14VziKTvrNxrMJL9Fx4rEVykoneMpzVVOI7pEajgehL0nwI8f4jxMfPbqRgGivK6N91old_IE0HK-mLSg4tiryks8mjP-rhf-KZ4ZN5JKpZyU7gzbA6SG9QNRLuUJAftzaJkgXqDt-AzvlHWB34DG3b8oNQ
@@ -75,14 +75,14 @@ Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjRkNzIxNTJjMm
 
 ## Endponts
 
-### Streams List
+### Stream List
 **Request**
 ```
-POST /api/streams/list
+GET /api/streams/list
 ```
 | Field | Value | Type | Required | Description |
 | ----- | ----- | ---- | -------- | ----------- |
-| game_id | 1 | Integer | - | - |
+| game_id | 29595 | Integer | - | - |
 | period | 2017-11-12 21:00 | Date | - | If not specified then current date time will be used.
 | period_end | 2017-11-13 | Date | - | If only *period* will be specified but *period_end* not, then exact *period* time will be used.
 
@@ -106,7 +106,7 @@ POST /api/streams/list
 ### Viewer Count List
 **Request**
 ```
-POST /api/streams/viewer-count
+GET /api/streams/viewer-count
 ```
 | Field | Value | Type | Required | Description |
 | ----- | ----- | ---- | -------- | ----------- |
@@ -151,7 +151,7 @@ POST /api/streams/viewer-count
 ### Games List
 **Request**
 ```
-POST /api/streams/viewer-count
+GET /api/streams/viewer-count
 ```
 **Response**
 ```json
@@ -180,3 +180,28 @@ POST /api/streams/viewer-count
 ```
 
 *is_active* field is needed for whether to pull the data from twitch about the game or not.
+
+## Cron
+
+In order to stop pulling data from Twitch you can use the following command:
+```
+docker-compose stop streams_cron
+```
+And vice versa:
+```
+docker-compose start -d streams_cron
+```
+
+## Ip Based Access
+If you need to restrict app by IP addresses you can uncomment the following line in `routes/api.php` file:
+```php
+Route::prefix('streams')
+//    ->middleware('ip:127.0.0.1,192.168.*')
+    ->group(function () {
+
+    Route::get('list', 'StreamsController@getStreamList');
+    Route::get('viewer-count', 'StreamsController@getViewerCount');
+});
+```
+
+## Enjoy
