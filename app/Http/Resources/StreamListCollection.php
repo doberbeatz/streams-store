@@ -22,7 +22,7 @@ class StreamListCollection extends ResourceCollection
                 ->map(function ($gameCollection) {
                     /** @var Collection $gameCollection */
                     return [
-                        'game_name'         => $gameCollection->first()->game->name,
+                        'game_name'   => $gameCollection->first()->game->name,
                         'stream_list' => $gameCollection->map(function ($stream) {
                             /** @var Stream $stream */
                             return $stream->stream_id;
