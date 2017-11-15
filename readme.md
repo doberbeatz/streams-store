@@ -19,9 +19,9 @@ Then install composer's dependencies:
 composer install
 ```
 
-Start the containers using docker-compose:
+Create .env file from example
 ```
-docker-compose up -d db web nginx
+cp .env.example .env
 ```
 
 Then register new app in your dev.twitch.tv account and add your Twitch ClientId and Secret into .env file located in root of project:
@@ -30,14 +30,14 @@ TWITCH_CLIENT_ID=2b1k7jdxmt4z46ay4s3lmdi0h74p37
 TWITCH_CLIENT_SECRET=52zibkla38p4gsn348qtyprax43p0t
 ```
 
+Start the containers using docker-compose:
+```
+docker-compose up -d db web nginx
+```
+
 After the all containers will be started out run next command:
 ```
 docker exec -ti streams_web bash -c 'php artisan migrate --seed'
-```
-
-In order to start pulling twitch data (cron) use the following command:
-```
-docker-compose up -d cron
 ```
 
 Then you need to generate Client Id and Secret using Passport Package:
