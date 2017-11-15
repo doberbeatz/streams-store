@@ -1,19 +1,27 @@
 # Streams Store
 App for collecting streams data from twitch service.
 
+## Requirements
+
+To use the app the following tools should be installed on your local machine:
+
+- docker
+- php7
+- composer
+
 ## Install
 
-First of all install `docker` on your system and clone the repository:
+First of all clone the repository:
 `git clone git@github.com:doberbeatz/streams-store.git`
+
+Then install composer's dependencies:
+```
+composer install
+```
 
 Start the containers using docker-compose:
 ```
 docker-compose up -d db web nginx
-```
-
-Install composer's dependencies:
-```
-docker exec -ti streams_web bash -c 'composer install'
 ```
 
 Then register new app in your dev.twitch.tv account and add your Twitch ClientId and Secret into .env file located in root of project:
