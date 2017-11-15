@@ -30,6 +30,11 @@ TWITCH_CLIENT_ID=2b1k7jdxmt4z46ay4s3lmdi0h74p37
 TWITCH_CLIENT_SECRET=52zibkla38p4gsn348qtyprax43p0t
 ```
 
+Generate the app key:
+```
+php artisan key:generate
+```
+
 Start the containers using docker-compose:
 ```
 docker-compose up -d
@@ -38,7 +43,6 @@ docker-compose up -d
 After the all containers will be started out run next commands:
 ```
 docker exec -ti streams_web bash -c 'php artisan migrate --seed'
-docker exec -ti streams_web bash -c 'php artisan key:generate'
 ```
 
 Then you need to generate Client Id and Secret using Passport Package:
