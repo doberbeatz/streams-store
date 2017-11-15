@@ -4,7 +4,7 @@ App for collecting streams data from twitch service.
 ## Install
 
 First of all clone the repository:
-`git clone git@github.com:doberbeatz/streamers-store.git`
+`git clone git@github.com:doberbeatz/streams-store.git`
 
 Then add your Twitch ClientId and Secret into .env file located in root of project:
 ```
