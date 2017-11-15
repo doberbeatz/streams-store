@@ -32,7 +32,7 @@ TWITCH_CLIENT_SECRET=52zibkla38p4gsn348qtyprax43p0t
 
 Start the containers using docker-compose:
 ```
-docker-compose up -d db web nginx
+docker-compose up -d
 ```
 
 After the all containers will be started out run next command:
