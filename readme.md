@@ -35,9 +35,10 @@ Start the containers using docker-compose:
 docker-compose up -d
 ```
 
-After the all containers will be started out run next command:
+After the all containers will be started out run next commands:
 ```
 docker exec -ti streams_web bash -c 'php artisan migrate --seed'
+docker exec -ti streams_web bash -c 'php artisan key:generate'
 ```
 
 Then you need to generate Client Id and Secret using Passport Package:
