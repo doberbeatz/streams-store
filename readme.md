@@ -227,4 +227,11 @@ Route::prefix('streams')
 });
 ```
 
+## Testing
+
+If you want to run unit tests run this:
+```
+./vendor/bin/phpunit
+```
+
 ## Enjoy
